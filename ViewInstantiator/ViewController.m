@@ -27,6 +27,9 @@
     self.objectTextField.delegate = self;
     self.messageTextField.delegate = self;
     
+    self.objectTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.messageTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    
     self.objectTextField.borderStyle = UITextBorderStyleRoundedRect;
     self.messageTextField.borderStyle = UITextBorderStyleRoundedRect;
     
@@ -70,14 +73,23 @@
         }
     }
     else if (textField == self.messageTextField) {
-//        NSArray *components = [self.messageTextField.text componentsSeparatedByString:@":"];
-//        
-//        // for now, only allow one parameter
-//        if (components.count == 2) {
-//            NSString *methodSignature = [NSString stringWithFormat:@"%@:", components[0]];
-//            [self.instantiatedObject performSelector:@selector(stringWithFormat:)
-//                                          withObject:components[1]];
-//        }
+        
+        // setText:hello
+        
+        NSArray *components = [self.messageTextField.text componentsSeparatedByString:@":"];
+        
+        // setText
+        // hello
+        
+        // for now, only allow one parameter
+        if (components.count == 2) {
+            
+            NSString *methodSignature = [components[0] stringByAppendingString:@":"];
+            SEL selector = NSSelectorFromString(methodSignature);
+            [self.instantiatedObject performSelector:selector
+                                          withObject:components[1]
+                                          afterDelay:0];
+        }
     }
     
     [textField resignFirstResponder];
